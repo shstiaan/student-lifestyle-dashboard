@@ -54,21 +54,4 @@
 
 ---
 
-## 📁 Struktur Repository
-student-lifestyle-dashboard/
-│
-├── dashboard.py # Main aplikasi Streamlit
-├── requirements.txt # Dependensi proyek
-├── .gitignore # File yang diabaikan git
-├── README.md # Dokumentasi proyek
-│
-├── data/
-│ └── StressLevelDataset.csv # Dataset
-│
-├── notebook/
-│ └── students_stress_model_comparison.ipynb
-│
-└── screenshots/ # Screenshot dashboard
-
-
 ---
