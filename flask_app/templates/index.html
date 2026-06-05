@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MindMeter - Edukasi Stres Mahasiswa</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="pattern-layer" aria-hidden="true"></div>
+
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Navigasi utama">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="MindMeter">
+        <img src="{{ url_for('static', filename='assets/mindmeter-logo.png') }}" alt="MindMeter">
+      </a>
+      <div class="nav-actions">
+        <a class="nav-chip" href="#stress-education-title">Edukasi</a>
+        <a class="nav-chip nav-chip-primary" href="{{ url_for('predict') }}">Mulai Prediksi</a>
+      </div>
+    </nav>
+
+    <section class="hero-board">
+      <div class="hero-copy">
+        <p class="eyebrow">MindMeter Stress Prediction</p>
+        <h1>Kenali stres terlebih dahulu, lalu lakukan prediksi dengan data.</h1>
+        <div class="hero-stats" aria-label="Ringkasan model">
+          <div>
+            <strong>0.8773</strong>
+            <span>Accuracy</span>
+          </div>
+          <div>
+            <strong>3</strong>
+            <span>Kelas</span>
+          </div>
+          <div>
+            <strong>20</strong>
+            <span>Sinyal</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a class="primary-button link-button" href="{{ url_for('predict') }}">Mulai Prediksi</a>
+          <a class="secondary-button link-button" href="#stress-education-title">Pelajari Stres</a>
+        </div>
+      </div>
+      <img class="hero-art" src="{{ url_for('static', filename='assets/mindmeter-hero.png') }}" alt="Ilustrasi dashboard MindMeter">
+    </section>
+
+    <section class="education-board" aria-labelledby="stress-education-title">
+      <div class="education-header">
+        <p class="eyebrow">Kenali Dulu</p>
+        <h2 id="stress-education-title">Apa itu stres?</h2>
+        <p>
+          Stres adalah respons alami tubuh dan pikiran saat menghadapi tuntutan, tekanan, atau situasi yang terasa sulit.
+          Dalam kadar wajar, stres bisa membantu kita fokus. Namun jika terlalu berat atau berlangsung lama, stres dapat
+          mengganggu kesehatan fisik, emosi, perilaku, dan aktivitas belajar.
+        </p>
+      </div>
+
+      <div class="education-grid">
+        <article class="edu-card card-blue">
+          <span class="edu-number">01</span>
+          <h3>Penyebab akademik</h3>
+          <p>
+            Deadline tugas, ujian, beban belajar tinggi, performa akademik, relasi dengan dosen, dan kekhawatiran karier
+            dapat meningkatkan tekanan pada mahasiswa.
+          </p>
+        </article>
+
+        <article class="edu-card card-yellow">
+          <span class="edu-number">02</span>
+          <h3>Penyebab psikologis</h3>
+          <p>
+            Kecemasan, depresi, harga diri rendah, riwayat kesehatan mental, dan kekhawatiran berlebihan dapat membuat
+            seseorang lebih rentan merasa stres.
+          </p>
+        </article>
+
+        <article class="edu-card card-mint">
+          <span class="edu-number">03</span>
+          <h3>Penyebab lingkungan & sosial</h3>
+          <p>
+            Kualitas tidur buruk, kondisi tempat tinggal, rasa aman, kebutuhan dasar, tekanan teman sebaya, dukungan sosial
+            rendah, dan bullying bisa ikut memicu stres.
+          </p>
+        </article>
+      </div>
+
+      <div class="care-note">
+        <strong>Catatan penting:</strong>
+        <span>
+          MindMeter adalah alat prediksi berbasis data, bukan diagnosis medis. Jika stres terasa berat, berlangsung lama,
+          mengganggu aktivitas harian, atau muncul pikiran menyakiti diri, segera hubungi tenaga profesional atau layanan
+          darurat setempat.
+        </span>
+      </div>
+
+      <div class="source-strip" aria-label="Sumber edukasi">
+        <span>Sumber:</span>
+        <a href="https://www.who.int/en/news-room/questions-and-answers/item/stress" target="_blank" rel="noreferrer">WHO</a>
+        <a href="https://www.mayoclinic.org/healthy-lifestyle/stress-management/in-depth/stress-symptoms/art-20050987" target="_blank" rel="noreferrer">Mayo Clinic</a>
+        <a href="https://medlineplus.gov/stress.html" target="_blank" rel="noreferrer">MedlinePlus</a>
+      </div>
+    </section>
+
+    <section class="cta-board">
+      <div>
+        <p class="eyebrow">Siap Mengisi Data?</p>
+        <h2>Lanjut ke halaman prediksi khusus.</h2>
+        <p>Form prediksi dibuat terpisah agar proses input lebih fokus dan rapi.</p>
+      </div>
+      <a class="primary-button link-button" href="{{ url_for('predict') }}">Buka Prediksi</a>
+    </section>
+  </main>
+</body>
+</html>

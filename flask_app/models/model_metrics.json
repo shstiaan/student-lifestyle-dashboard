@@ -1,0 +1,5 @@
+{
+  "test_accuracy": 0.8772727272727273,
+  "test_f1_macro": 0.8767938633710446,
+  "selected_by": "F1 Macro Mean from 5-fold CV on train set"
+}
