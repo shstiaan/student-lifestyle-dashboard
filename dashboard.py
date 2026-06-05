@@ -92,7 +92,6 @@ st.markdown("""
 # ============================================
 # FUNGSI LOAD ATAU TRAIN MODEL (dengan notifikasi sekali saja)
 # ============================================
-@st.cache_resource
 def load_or_train_model():
     """Load model jika ada dan kompatibel, atau latih ulang. Notifikasi disimpan ke session state."""
     model_path = Path("models/stress_level_model.joblib")
