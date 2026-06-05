@@ -1,0 +1,213 @@
+{
+  "model_name": "HistGradientBoostingClassifier",
+  "features": [
+    "anxiety_level",
+    "self_esteem",
+    "mental_health_history",
+    "depression",
+    "headache",
+    "blood_pressure",
+    "sleep_quality",
+    "breathing_problem",
+    "noise_level",
+    "living_conditions",
+    "safety",
+    "basic_needs",
+    "academic_performance",
+    "study_load",
+    "teacher_student_relationship",
+    "future_career_concerns",
+    "social_support",
+    "peer_pressure",
+    "extracurricular_activities",
+    "bullying"
+  ],
+  "stress_labels": {
+    "0": "Low Stress",
+    "1": "Medium Stress",
+    "2": "High Stress"
+  },
+  "feature_schema": [
+    {
+      "name": "anxiety_level",
+      "label": "Anxiety Level",
+      "min": 0.0,
+      "max": 21.0,
+      "step": 1.0,
+      "default": 11.0,
+      "description": "Skor anxiety level (0-21)"
+    },
+    {
+      "name": "self_esteem",
+      "label": "Self Esteem",
+      "min": 0.0,
+      "max": 30.0,
+      "step": 1.0,
+      "default": 19.0,
+      "description": "Skor self esteem (0-30)"
+    },
+    {
+      "name": "mental_health_history",
+      "label": "Mental Health History",
+      "min": 0.0,
+      "max": 1.0,
+      "step": 1.0,
+      "default": 0.0,
+      "description": "Skor mental health history (0-1)"
+    },
+    {
+      "name": "depression",
+      "label": "Depression",
+      "min": 0.0,
+      "max": 27.0,
+      "step": 1.0,
+      "default": 12.0,
+      "description": "Skor depression (0-27)"
+    },
+    {
+      "name": "headache",
+      "label": "Headache",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 3.0,
+      "description": "Skor headache (0-5)"
+    },
+    {
+      "name": "blood_pressure",
+      "label": "Blood Pressure",
+      "min": 1.0,
+      "max": 3.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor blood pressure (0-3)"
+    },
+    {
+      "name": "sleep_quality",
+      "label": "Sleep Quality",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.5,
+      "description": "Skor sleep quality (0-5)"
+    },
+    {
+      "name": "breathing_problem",
+      "label": "Breathing Problem",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 3.0,
+      "description": "Skor breathing problem (0-5)"
+    },
+    {
+      "name": "noise_level",
+      "label": "Noise Level",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 3.0,
+      "description": "Skor noise level (0-5)"
+    },
+    {
+      "name": "living_conditions",
+      "label": "Living Conditions",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor living conditions (0-5)"
+    },
+    {
+      "name": "safety",
+      "label": "Safety",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor safety (0-5)"
+    },
+    {
+      "name": "basic_needs",
+      "label": "Basic Needs",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 3.0,
+      "description": "Skor basic needs (0-5)"
+    },
+    {
+      "name": "academic_performance",
+      "label": "Academic Performance",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor academic performance (0-5)"
+    },
+    {
+      "name": "study_load",
+      "label": "Study Load",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor study load (0-5)"
+    },
+    {
+      "name": "teacher_student_relationship",
+      "label": "Teacher Student Relationship",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor teacher student relationship (0-5)"
+    },
+    {
+      "name": "future_career_concerns",
+      "label": "Future Career Concerns",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor future career concerns (0-5)"
+    },
+    {
+      "name": "social_support",
+      "label": "Social Support",
+      "min": 0.0,
+      "max": 3.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor social support (0-3)"
+    },
+    {
+      "name": "peer_pressure",
+      "label": "Peer Pressure",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.0,
+      "description": "Skor peer pressure (0-5)"
+    },
+    {
+      "name": "extracurricular_activities",
+      "label": "Extracurricular Activities",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 2.5,
+      "description": "Skor extracurricular activities (0-5)"
+    },
+    {
+      "name": "bullying",
+      "label": "Bullying",
+      "min": 0.0,
+      "max": 5.0,
+      "step": 1.0,
+      "default": 3.0,
+      "description": "Skor bullying (0-5)"
+    }
+  ],
+  "test_accuracy": 0.8772727272727273
+}
