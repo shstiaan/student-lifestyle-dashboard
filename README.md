@@ -54,4 +54,30 @@
 
 ---
 
+
+---
+
+## 🔧 Petunjuk Penggunaan Aplikasi
+
+### Prasyarat
+- Python 3.12 atau lebih baru
+- Git (opsional)
+- Minimal RAM 4GB
+
+### Langkah-langkah Instalasi
+
+```bash
+# 1. Clone repository
+git clone https://github.com/username/student-lifestyle-dashboard.git
+cd student-lifestyle-dashboard
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Pastikan Anda berada di direktori root proyek
+cd student-lifestyle-dashboard
+
+# 4. Jalankan dashboard Streamlit
+streamlit run dashboard.py
+
 ---
