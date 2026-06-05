@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MindMeter - Rekomendasi Personal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="pattern-layer" aria-hidden="true"></div>
+
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Navigasi utama">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="MindMeter">
+        <img src="{{ url_for('static', filename='assets/mindmeter-logo.png') }}" alt="MindMeter">
+      </a>
+      <div class="nav-actions">
+        <a class="nav-chip" href="{{ url_for('index') }}">Tentang Stres</a>
+        <a class="nav-chip" href="{{ url_for('predict') }}">Prediksi Ulang</a>
+      </div>
+    </nav>
+
+    {% if missing_payload %}
+      <section class="recommendation-hero">
+        <div>
+          <p class="eyebrow">Rekomendasi Personal</p>
+          <h1>Data prediksi belum tersedia.</h1>
+          <p>Halaman ini dibuat setelah kamu menyelesaikan form prediksi. Isi form terlebih dahulu agar rekomendasi bisa disesuaikan.</p>
+        </div>
+        <a class="primary-button link-button" href="{{ url_for('predict') }}">Buka Prediksi</a>
+      </section>
+    {% else %}
+      <section class="recommendation-hero">
+        <div>
+          <p class="eyebrow">Personal Care Plan</p>
+          <h1>Rekomendasi untuk {{ prediction.label }}</h1>
+          <p>{{ recommendation.summary }}</p>
+        </div>
+        <img class="recommendation-result-art" src="{{ url_for('static', filename=prediction.asset) }}" alt="Ilustrasi {{ prediction.label }}">
+      </section>
+
+      {% if llm_notice %}
+        <section class="alert recommendation-notice" role="status">
+          <p>{{ llm_notice }}</p>
+        </section>
+      {% endif %}
+
+      <section class="recommendation-layout">
+        <aside class="recommendation-side">
+          <div class="result-sticker">RINGKASAN</div>
+          <h2>{{ prediction.label }}</h2>
+          <p class="class-id">Kelas {{ prediction.class_id }}</p>
+          {% if probabilities %}
+            <div class="probability-list">
+              {% for item in probabilities %}
+                <div class="probability-row">
+                  <div class="probability-label">
+                    <strong>{{ item.label }}</strong>
+                    <b>{{ item.probability }}%</b>
+                  </div>
+                  <div class="bar-track" aria-label="{{ item.label }} {{ item.probability }} persen">
+                    <div class="bar-fill class-{{ item.class_id }}" style="width: {{ item.probability }}%"></div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </aside>
+
+        <div class="recommendation-main">
+          <section class="recommendation-card card-blue-soft">
+            <h2>Faktor yang Perlu Diprioritaskan</h2>
+            {% if recommendation.priority_factors %}
+              <div class="factor-list">
+                {% for factor in recommendation.priority_factors %}
+                  <article>
+                    <strong>{{ factor.label }}</strong>
+                    <span>Nilai: {{ factor.value }}</span>
+                    <p>{{ factor.reason }}</p>
+                  </article>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p>Tidak ada faktor ekstrem yang terdeteksi. Tetap jaga rutinitas sehat dan pantau kondisi harian.</p>
+            {% endif %}
+          </section>
+
+          <section class="recommendation-card">
+            <h2>Saran Kegiatan</h2>
+            <ul>
+              {% for item in recommendation.activities %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </section>
+
+          <section class="recommendation-card card-mint-soft">
+            <h2>Saran Pencegahan</h2>
+            <ul>
+              {% for item in recommendation.prevention %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </section>
+
+          <section class="recommendation-card card-yellow-soft">
+            <h2>Coping Singkat</h2>
+            <ul>
+              {% for item in recommendation.coping %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </section>
+
+          <section class="recommendation-card">
+            <h2>Saran Lagu</h2>
+            <div class="song-list">
+              {% for song in recommendation.songs %}
+                <article>
+                  <strong>{{ song.title }}</strong>
+                  <span>{{ song.artist }}</span>
+                  <p>{{ song.reason }}</p>
+                </article>
+              {% endfor %}
+            </div>
+          </section>
+
+          <section class="recommendation-card card-coral-soft">
+            <h2>Rutinitas 7 Hari</h2>
+            <div class="plan-list">
+              {% for plan in recommendation.seven_day_plan %}
+                <article>
+                  <span>{{ plan.day }}</span>
+                  <strong>{{ plan.focus }}</strong>
+                  <p>{{ plan.action }}</p>
+                </article>
+              {% endfor %}
+            </div>
+          </section>
+
+          <section class="recommendation-card professional-card">
+            <h2>Kapan Perlu Bantuan Profesional?</h2>
+            <p>{{ recommendation.professional_help }}</p>
+            <small>{{ recommendation.disclaimer }}</small>
+          </section>
+        </div>
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>

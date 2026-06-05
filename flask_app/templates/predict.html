@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MindMeter - Prediksi Tingkat Stres</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="pattern-layer" aria-hidden="true"></div>
+
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Navigasi utama">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="MindMeter">
+        <img src="{{ url_for('static', filename='assets/mindmeter-logo.png') }}" alt="MindMeter">
+      </a>
+      <div class="nav-actions">
+        <a class="nav-chip" href="{{ url_for('index') }}">Tentang Stres</a>
+        <a class="nav-chip nav-chip-primary" href="{{ url_for('predict') }}">Prediksi</a>
+      </div>
+    </nav>
+
+    <section class="predict-intro">
+      <div>
+        <p class="eyebrow">Prediction Workspace</p>
+        <h1>Isi data mahasiswa untuk memprediksi tingkat stres.</h1>
+        <p>Gunakan nilai sesuai rentang pada setiap field. Hasil akan muncul setelah tahap terakhir disubmit.</p>
+      </div>
+      <div class="model-meta" aria-label="Informasi model">
+        <span>{{ metadata.model_name }}</span>
+        <span>{{ metadata.features|length }} fitur</span>
+      </div>
+    </section>
+
+    {% if errors %}
+      <section class="alert" role="alert">
+        {% for error in errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    <section class="app-grid">
+      <form method="post" action="{{ url_for('predict') }}" class="wizard-card" id="prediction-form" novalidate>
+        <div class="stepper" aria-label="Tahapan form">
+          {% for group in field_groups %}
+            <button
+              class="step-tab"
+              type="button"
+              data-step-target="{{ loop.index0 }}"
+              aria-current="{{ 'step' if loop.first else 'false' }}"
+            >
+              <span>{{ group.badge }}</span>
+              <b>{{ group.title }}</b>
+            </button>
+          {% endfor %}
+        </div>
+
+        {% for group in field_groups %}
+          <fieldset class="step-panel accent-{{ group.accent }}" data-step-panel="{{ loop.index0 }}" {% if not loop.first %}hidden{% endif %}>
+            <legend>
+              <span>{{ group.badge }}</span>
+              {{ group.title }}
+            </legend>
+
+            <div class="form-grid">
+              {% for field in group.fields %}
+                <label class="field" for="{{ field.name }}">
+                  <span>{{ field.label }}</span>
+                  <small>{{ field.description }}</small>
+                  <input
+                    type="number"
+                    id="{{ field.name }}"
+                    name="{{ field.name }}"
+                    min="{{ field.min }}"
+                    max="{{ field.max }}"
+                    step="{{ field.step }}"
+                    value="{{ form_values.get(field.name, '') }}"
+                    required
+                  >
+                  <div class="field-help">
+                    <p>{{ field.direction }}</p>
+                    <div>
+                      <span>{{ field.low }}</span>
+                      <span>Rentang: {{ field.min }}-{{ field.max }}</span>
+                      <span>{{ field.high }}</span>
+                    </div>
+                  </div>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+
+        <div class="wizard-actions">
+          <button class="secondary-button" type="button" id="prev-step">Sebelumnya</button>
+          <button class="primary-button" type="button" id="next-step">Lanjut</button>
+          <button class="primary-button submit-button" type="submit" id="submit-form">Prediksi</button>
+        </div>
+      </form>
+
+      <aside class="result-card">
+        <div class="result-sticker">OUTPUT</div>
+
+        {% if prediction %}
+          <img class="result-art" src="{{ url_for('static', filename=prediction.asset) }}" alt="Ilustrasi {{ prediction.label }}">
+          <p class="eyebrow">Hasil Prediksi</p>
+          <h2>{{ prediction.label }}</h2>
+          <p class="class-id">Kelas {{ prediction.class_id }}</p>
+
+          {% if probabilities %}
+            <div class="probability-list">
+              {% for item in probabilities %}
+                <div class="probability-row">
+                  <div class="probability-label">
+                    <strong>{{ item.label }}</strong>
+                    <b>{{ item.probability }}%</b>
+                  </div>
+                  <div class="bar-track" aria-label="{{ item.label }} {{ item.probability }} persen">
+                    <div class="bar-fill class-{{ item.class_id }}" style="width: {{ item.probability }}%"></div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <form method="post" action="{{ url_for('recommendation') }}" class="recommendation-launch">
+            {% for field in fields %}
+              <input type="hidden" name="{{ field.name }}" value="{{ form_values.get(field.name, '') }}">
+            {% endfor %}
+            <button class="primary-button submit-button" type="submit">Lihat Rekomendasi Personal</button>
+          </form>
+        {% else %}
+          <img class="result-art" src="{{ url_for('static', filename='assets/result-medium.png') }}" alt="Ilustrasi hasil prediksi">
+          <p class="eyebrow">Hasil Prediksi</p>
+          <h2>Belum ada prediksi</h2>
+          <p class="muted">Lengkapi wizard, lalu tekan tombol prediksi.</p>
+        {% endif %}
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const form = document.querySelector("#prediction-form");
+      const panels = Array.from(document.querySelectorAll("[data-step-panel]"));
+      const tabs = Array.from(document.querySelectorAll("[data-step-target]"));
+      const prevButton = document.querySelector("#prev-step");
+      const nextButton = document.querySelector("#next-step");
+      const submitButton = document.querySelector("#submit-form");
+      let activeStep = 0;
+
+      function validatePanel(index) {
+        const inputs = Array.from(panels[index].querySelectorAll("input"));
+        for (const input of inputs) {
+          if (!input.checkValidity()) {
+            input.reportValidity();
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function validateAllPanels() {
+        for (let index = 0; index < panels.length; index += 1) {
+          const inputs = Array.from(panels[index].querySelectorAll("input"));
+          const invalidInput = inputs.find((input) => !input.checkValidity());
+          if (invalidInput) {
+            showStep(index);
+            invalidInput.reportValidity();
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function showStep(index) {
+        activeStep = Math.max(0, Math.min(index, panels.length - 1));
+
+        panels.forEach((panel, panelIndex) => {
+          panel.hidden = panelIndex !== activeStep;
+        });
+
+        tabs.forEach((tab, tabIndex) => {
+          tab.classList.toggle("is-active", tabIndex === activeStep);
+          tab.classList.toggle("is-complete", tabIndex < activeStep);
+          tab.setAttribute("aria-current", tabIndex === activeStep ? "step" : "false");
+        });
+
+        prevButton.disabled = activeStep === 0;
+        nextButton.hidden = activeStep === panels.length - 1;
+        submitButton.hidden = activeStep !== panels.length - 1;
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const target = Number(tab.dataset.stepTarget);
+          if (target <= activeStep || validatePanel(activeStep)) {
+            showStep(target);
+          }
+        });
+      });
+
+      prevButton.addEventListener("click", () => showStep(activeStep - 1));
+      nextButton.addEventListener("click", () => {
+        if (validatePanel(activeStep)) {
+          showStep(activeStep + 1);
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        if (!validateAllPanels()) {
+          event.preventDefault();
+        }
+      });
+
+      showStep(0);
+    })();
+  </script>
+</body>
+</html>
